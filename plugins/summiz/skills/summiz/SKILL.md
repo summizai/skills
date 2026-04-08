@@ -4,7 +4,7 @@ description: Search, summarize, and analyze YouTube videos and podcasts with Sum
 license: MIT
 metadata:
   author: summizai
-  version: "1.0.0"
+  version: "1.0.1"
   tags: summiz, youtube, podcasts, summaries, transcripts, quick-takes, content, ai
 allowed-tools: Bash(node *)
 ---

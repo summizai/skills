@@ -1,6 +1,6 @@
 {
   "name": "summiz",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "7-command Claude Code skill for Summiz — search, summarize, and analyze YouTube videos and podcasts from your terminal",
   "author": {
     "name": "summizai",
