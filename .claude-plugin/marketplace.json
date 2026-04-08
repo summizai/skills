@@ -1,0 +1,23 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "summizai-marketplace",
+  "version": "1.0.0",
+  "description": "Claude Code skills by Summiz",
+  "owner": {
+    "name": "summizai",
+    "email": "alberduris@summiz.ai"
+  },
+  "plugins": [
+    {
+      "name": "summiz",
+      "description": "7-command Claude Code skill for Summiz — search, summarize, and analyze YouTube videos and podcasts from your terminal",
+      "version": "1.0.0",
+      "author": {
+        "name": "summizai",
+        "email": "alberduris@summiz.ai"
+      },
+      "source": "./plugins/summiz",
+      "category": "productivity"
+    }
+  ]
+}

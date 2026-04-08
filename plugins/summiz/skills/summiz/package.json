@@ -1,0 +1,15 @@
+{
+  "name": "summiz-skill",
+  "version": "1.0.0",
+  "description": "7-command Claude Code skill for Summiz — search, summarize, and analyze YouTube videos and podcasts",
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "typescript": "^5.7.0"
+  }
+}
