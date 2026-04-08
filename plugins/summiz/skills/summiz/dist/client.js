@@ -2,6 +2,16 @@ const BASE_URL = process.env.SUMMIZ_API_URL || "https://www.summiz.ai/api/public
 export function createClient() {
     return { get: apiGet, post: apiPost };
 }
+async function parseResponse(res) {
+    const contentType = res.headers.get("content-type") || "";
+    if (!contentType.includes("application/json")) {
+        throw new ApiError(res.status, `Expected JSON but got ${contentType || "unknown content type"} from ${res.url}. The Summiz API may be unavailable or the endpoint may not exist.`);
+    }
+    const data = await res.json();
+    if (!res.ok)
+        throw new ApiError(res.status, data);
+    return data;
+}
 async function apiGet(endpoint, params) {
     const url = new URL(`${BASE_URL}/${endpoint}`);
     if (params) {
@@ -10,11 +20,7 @@ async function apiGet(endpoint, params) {
                 url.searchParams.set(k, v);
         }
     }
-    const res = await fetch(url);
-    const data = await res.json();
-    if (!res.ok)
-        throw new ApiError(res.status, data);
-    return data;
+    return parseResponse(await fetch(url));
 }
 async function apiPost(endpoint, body) {
     const res = await fetch(`${BASE_URL}/${endpoint}`, {
@@ -22,18 +28,17 @@ async function apiPost(endpoint, body) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
     });
-    const data = await res.json();
-    if (!res.ok)
-        throw new ApiError(res.status, data);
-    return data;
+    return parseResponse(res);
 }
 export class ApiError extends Error {
     status;
     data;
     constructor(status, data) {
-        const msg = typeof data === "object" && data !== null && "error" in data
-            ? data.error
-            : `HTTP ${status}`;
+        const msg = typeof data === "string"
+            ? data
+            : typeof data === "object" && data !== null && "error" in data
+                ? data.error
+                : `HTTP ${status}`;
         super(msg);
         this.status = status;
         this.data = data;

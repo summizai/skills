@@ -9,6 +9,19 @@ export function createClient(): SummizClient {
   return { get: apiGet, post: apiPost };
 }
 
+async function parseResponse(res: Response): Promise<unknown> {
+  const contentType = res.headers.get("content-type") || "";
+  if (!contentType.includes("application/json")) {
+    throw new ApiError(
+      res.status,
+      `Expected JSON but got ${contentType || "unknown content type"} from ${res.url}. The Summiz API may be unavailable or the endpoint may not exist.`
+    );
+  }
+  const data = await res.json();
+  if (!res.ok) throw new ApiError(res.status, data);
+  return data;
+}
+
 async function apiGet(
   endpoint: string,
   params?: Record<string, string>
@@ -19,10 +32,7 @@ async function apiGet(
       if (v !== undefined) url.searchParams.set(k, v);
     }
   }
-  const res = await fetch(url);
-  const data = await res.json();
-  if (!res.ok) throw new ApiError(res.status, data);
-  return data;
+  return parseResponse(await fetch(url));
 }
 
 async function apiPost(
@@ -34,9 +44,7 @@ async function apiPost(
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(body),
   });
-  const data = await res.json();
-  if (!res.ok) throw new ApiError(res.status, data);
-  return data;
+  return parseResponse(res);
 }
 
 export class ApiError extends Error {
@@ -45,9 +53,11 @@ export class ApiError extends Error {
     readonly data: unknown
   ) {
     const msg =
-      typeof data === "object" && data !== null && "error" in data
-        ? (data as { error: string }).error
-        : `HTTP ${status}`;
+      typeof data === "string"
+        ? data
+        : typeof data === "object" && data !== null && "error" in data
+          ? (data as { error: string }).error
+          : `HTTP ${status}`;
     super(msg);
   }
 }
