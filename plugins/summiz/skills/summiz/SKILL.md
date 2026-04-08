@@ -6,12 +6,10 @@ metadata:
   author: summizai
   version: "1.0.0"
   tags: summiz, youtube, podcasts, summaries, transcripts, quick-takes, content, ai
-allowed-tools: Bash(node *), Bash(npm *)
+allowed-tools: Bash(node *)
 ---
 
-Summiz skill for searching, summarizing, and analyzing YouTube videos and podcasts. No credentials required — all endpoints are public. All commands go through a single entry point: `node <base_directory>/summiz.js <command> [flags]`. Each command has its own doc file with the full reference for flags and behavior.
-
-[!SETUP] Before first use, check whether `<base_directory>/node_modules` exists. If it does NOT exist, run `npm install --prefix <base_directory>`. Then check whether `<base_directory>/dist/summiz.js` exists. If it does NOT exist, run `npm run build --prefix <base_directory>`. NEVER cd into the skill directory; use --prefix to target it without changing your working directory.
+Summiz skill for searching, summarizing, and analyzing YouTube videos and podcasts. No credentials required — all endpoints are public. Zero setup — no npm install, no build step, no credentials. All commands go through a single entry point: `node <base_directory>/summiz.js <command> [flags]`. Each command has its own doc file with the full reference for flags and behavior. NEVER cd into the skill directory; always use absolute paths.
 
 [!COMMANDS]
 
